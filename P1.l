@@ -1,36 +1,25 @@
 %{
-	#include<stdio.h>
-	#include<strings.h>
-	#include<stdlib.h>
-    int yyflex();
-	int lines=0,words=0,Characters=0,blank=0;
+#include<stdio.h>
+int sc=0,wc=0,lc=0,cc=0;
 %}
 
 %%
-[\n] {lines++;}
-
-[^ /\t, /\n] {Characters++;}
+[\n] { lc++; cc+=yyleng;}
+[  \t] { sc++; cc+=yyleng;}
+[^\t\n ]+ { wc++;  cc+=yyleng;}
 %%
 
-int main(){
-	yyin = fopen("input.txt","r");
-
+int main(int argc ,char* argv[ ])
+{
+	printf("Enter the input:\n");
 	yylex();
-   
+	printf("The number of lines=%d\n",lc);
+	printf("The number of spaces=%d\n",sc);
+	printf("The number of words=%d\n",wc);
+	printf("The number of characters are=%d\n",cc);
+}
 
-    printf("\n\t=============== This file contains ==============\n");
-    printf("\tTotal %d Lines\n",lines);
-    printf("\tTotal %d Characters \n",Characters);
-    
-
-   
-
-return 0;
-}	
- 
-yywrap(){}
-
-yyerror(){
-printf("\nError\n");
-exit(0);
+int yywrap( )
+{
+	return 1;
 }

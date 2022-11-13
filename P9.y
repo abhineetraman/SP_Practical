@@ -1,29 +1,28 @@
 %{
-	#include<stdio.h>
-	#include<stdlib.h>
-
-	#include "y.tab.c"
+/* 4a.y Yacc Program to check the validity of an arithmetic Expression that uses operators +, -, *, /
+*/
+#include<stdio.h>
+#include<stdlib.h>
 %}
-
-%token NUM VAR NL
-
+%token NUM  ID
+%left '+' '-'
+%left '*' '/'
 %%
-
-S : S1 NL{printf("\nValid Expression\n");return 0;}
-
-S1 :  S1 '+' S1|S1 '-' S1|S1 '/' S1|S1 '*' S1| '(' S1 ')' | VAR | NUM |;
-
+e : e '+' e
+|   e '-' e
+|   e '*' e
+|   e '/' e
+|   '('e')'
+| NUM
+| ID         ;
 %%
-
-int main(){
-	printf("\nEnter an Expression :: ");
-	yyparse();
-    return 0;
+main()
+{
+printf(" Type the Expression & Press Enter key\n");
+yyparse();
+printf(" Valid Expression \n");
 }
-
-int yywrap(){}
-
-int yyerror(){
-	printf("\nInvalid Expression\n");
-	exit(1);
+yyerror()
+{
+printf(" Invalid Expresion!!!!\n"); exit(0);
 }
